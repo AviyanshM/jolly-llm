@@ -10,7 +10,7 @@ const typeOut = (text, element) => {
     element.innerHTML += text[i];
     i++;
     if (i >= text.length) clearInterval(interval);
-  }, 10); // Speed: 10ms per character
+  }, 10); 
 };
 
 generateBtn.addEventListener("click", async () => {
@@ -20,7 +20,8 @@ generateBtn.addEventListener("click", async () => {
   outputArea.innerHTML = `<div style="color: #999;">🧠 Generating arguments...</div>`;
 
   try {
-    const response = await fetch("http://localhost:5000/api/generate", {
+    const response = await fetch("https://jolly-llm.onrender.com/api/generate", {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",
