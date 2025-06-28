@@ -30,9 +30,13 @@ generateBtn.addEventListener("click", async () => {
     });
 
     const data = await response.json();
+let cleanedOutput = data.output
+  .replace(/\*\*Prosecution'?s Argument\*\*/gi, "🟥 Prosecution:")
+  .replace(/\*\*Defense'?s Argument\*\*/gi, "🟩 Defense:")
 
     // 🟨 Typewriter effect replaces direct innerText assignment
-    typeOut(data.output, outputArea);
+    typeOut(cleanedOutput.trim(), outputArea);
+
   } catch (err) {
     outputArea.innerHTML = `<div style="color: red;">⚠️ Error: ${err.message}</div>`;
     console.error(err);
