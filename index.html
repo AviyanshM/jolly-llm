@@ -112,6 +112,33 @@ textarea::placeholder {
   margin-bottom: 2rem;
   animation: pulseTitle 2.5s ease-in-out infinite;
 }
+#output-wrapper {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.output-box {
+  flex: 1 1 300px;
+  background: repeating-linear-gradient(
+    45deg,
+    #1e1b17,
+    #1e1b17 10px,
+    #2a241c 10px,
+    #2a241c 20px
+  );
+  border: 2px dashed #94734b;
+  border-radius: 12px;
+  padding: 1rem;
+  min-height: 180px;
+  color: #f4f1d3;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  overflow-y: auto;
+}
+
 @keyframes pulseTitle {
   0%   { opacity: 1; text-shadow: 2px 2px 0 #1d1b16; }
   50%  { opacity: 0.8; text-shadow: 2px 2px 0 #1d1b16, 0 0 12px #c9a86c; }
@@ -150,29 +177,17 @@ textarea::placeholder {
     <button id="generateBtn">Generate Arguments</button>
     <br /><br />
 
-    <div id="output" style="
-  border: 2px dashed #94734b;
-  background: repeating-linear-gradient(
-    45deg,
-    #1e1b17,
-    #1e1b17 10px,
-    #2a241c 10px,
-    #2a241c 20px
-  );
-  padding: 1.5rem;
-  border-radius: 12px;
-  min-height: 150px;
-  max-height: 400px;
-  overflow-y: auto;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.65rem;
-  line-height: 1.8;
-  white-space: pre-wrap;
-  color: #f4f1d3;
-  margin-top: 1rem;
-  animation: flicker 1.6s infinite alternate;
-  box-shadow: 0 0 20px rgba(201, 168, 108, 0.15);
-"></div>
+    <div id="output-wrapper">
+  <div class="output-box" id="prosecution-box">
+    <h3>🟥 Prosecution</h3>
+    <div id="prosecution-output"></div>
+  </div>
+  <div class="output-box" id="defense-box">
+    <h3>🟩 Defense</h3>
+    <div id="defense-output"></div>
+  </div>
+</div>
+
 <div class="credits">
   Built with 💻 by <strong>Team Prison Breakers</strong> for Pixel Palettes Hackathon 2025.
 </div>
