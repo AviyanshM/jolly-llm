@@ -1,52 +1,42 @@
 console.log("main.js loaded");
 
+const inputBox = document.getElementById("inputBox");
 const generateBtn = document.getElementById("generateBtn");
-const inputBox = document.getElementById("inputBox"); // make sure input has id="inputBox"
-const prosecutionBox = document.getElementById("prosecution-output");
-const defenseBox = document.getElementById("defense-output");
+const outputArea = document.getElementById("output");
 
-const typeOut = (text, element) => {
-  element.innerHTML = "";
+function typeOut(text, element) {
+  element.innerText = "";
   let i = 0;
   const interval = setInterval(() => {
-    element.innerHTML += text[i];
+    element.innerText += text[i];
     i++;
     if (i >= text.length) clearInterval(interval);
   }, 10);
-};
+}
 
 generateBtn.addEventListener("click", async () => {
   const prompt = inputBox.value.trim();
   if (!prompt) return;
 
-  // show placeholders while loading
-  prosecutionBox.innerHTML = `<div style="color: #999;">🧠 Generating Prosecution...</div>`;
-  defenseBox.innerHTML = `<div style="color: #999;">🧠 Generating Defense...</div>`;
+  outputArea.innerHTML = `<div style="color: #999;">🧠 Generating arguments...</div>`;
 
   try {
     const response = await fetch("https://jolly-llm.onrender.com/api/generate", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt }),
     });
 
     const data = await response.json();
-    const output = data.output;
 
-    // extract arguments using markdown-style markers
-    const prosecutionMatch = output.match(/\*\*Prosecution'?s Argument\*\*([\s\S]*?)\*\*Defense'?s Argument\*\*/i);
-    const defenseMatch = output.match(/\*\*Defense'?s Argument\*\*([\s\S]*)/i);
+    let cleanedOutput = data.output
+      .replace(/\*\*Prosecution'?s Argument\*\*/gi, "🟥 Prosecution:")
+      .replace(/\*\*Defense'?s Argument\*\*/gi, "🟩 Defense:")
+      .replace(/\*\*Verdict\*\*/gi, "⚖️ Verdict:");
 
-    const prosecutionText = prosecutionMatch ? prosecutionMatch[1].trim() : "Prosecution argument not found.";
-    const defenseText = defenseMatch ? defenseMatch[1].trim() : "Defense argument not found.";
-
-    typeOut(prosecutionText, prosecutionBox);
-    typeOut(defenseText, defenseBox);
+    typeOut(cleanedOutput.trim(), outputArea);
   } catch (err) {
-    prosecutionBox.innerHTML = `<div style="color: red;">⚠️ Error: ${err.message}</div>`;
-    defenseBox.innerHTML = "";
+    outputArea.innerHTML = `<div style="color: red;">⚠️ Error: ${err.message}</div>`;
     console.error("Fetch error:", err);
   }
 });
